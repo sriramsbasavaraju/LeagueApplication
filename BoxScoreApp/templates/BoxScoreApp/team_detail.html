@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ team.name }}</title>
+</head>
+<body>
+    <h1>{{ team.name }}</h1>
+    <p>Head Coach: {{ team.head_coach }}</p>
+
+    <h2>Players</h2>
+    <ul>
+        {% for player in players %}
+            <li>
+                <a href =  {%url 'player_detail' player.name%}> {{ player.name }}</a> (#{{ player.number }}) - 
+                Position: {{ player.get_position_display }}
+            </li>
+        {% empty %}
+            <p>No players on this team.</p>  
+        {% endfor %}
+    </ul>
+    <a href="{% url 'team_list' %}">Back to Team List</a>
+    <a href="{% url 'edit_team' team.name %}">Edit Team</a>
+</body>
+</html>

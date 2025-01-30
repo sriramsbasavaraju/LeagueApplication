@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<h2>Game Stats</h2>
+<html>
+<head>
+    <title> {{game.id}} </title>
+    <body>
+        {% load custom_filters %}
+        <a href = {%url 'home'%}>Home</a>
+        <h1>{{game|game_str}}</h1>
+        <h2>{{game.team1.name}}: {{team1_stats|total_points}}</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>PTS</th>
+                <th>REB</th>
+                <th>AST</th>
+                <th>BLK</th>
+                <th>STL</th>
+                <th>PF</th>
+                <th>OREB</th>
+                <th>DREB</th>
+            </tr>
+        {%for p in team1_stats%}
+            <tr>
+                <td><a href =  {%url 'player_detail' p.player.name%}> {{ p.player.name }}</a></td>
+                <td>{{p.points}}</td>
+                <td>{{p.off_rebounds|add:p.def_rebounds}}</td>
+                <td>{{p.assists}}</td>
+                <td>{{p.blocks}}</td>
+                <td>{{p.steals}}</td>
+                <td>{{p.fouls}}</td>
+                <td>{{p.off_rebounds}}</td>
+                <td>{{p.def_rebounds}}</td>
+            </tr>
+        {%empty%}
+        <p>No players on this team.</p>
+        {%endfor%}
+        </table>
+
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>PTS</th>
+                <th>REB</th>
+                <th>AST</th>
+                <th>BLK</th>
+                <th>STL</th>
+                <th>PF</th>
+                <th>OREB</th>
+                <th>DREB</th>
+            </tr>
+        <h2>{{game.team2.name}}: {{team2_stats|total_points}}</h2>
+        {%for p in team2_stats%}
+            <tr>
+                <td><a href =  {%url 'player_detail' p.player.name%}> {{ p.player.name }}</a></td>
+                <td>{{p.points}}</td>
+                <td>{{p.off_rebounds|add:p.def_rebounds}}</td>
+                <td>{{p.assists}}</td>
+                <td>{{p.blocks}}</td>
+                <td>{{p.steals}}</td>
+                <td>{{p.fouls}}</td>
+                <td>{{p.off_rebounds}}</td>
+                <td>{{p.def_rebounds}}</td>
+            </tr>
+        {%empty%}
+        <p>No players on this team.</p>
+        {%endfor%}
+        </table>
+        
+
+    </body>
+</head>
+</html>

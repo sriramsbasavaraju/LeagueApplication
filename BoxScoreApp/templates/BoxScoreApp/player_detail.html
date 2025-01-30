@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ player.name }}</title>
+</head>
+<body>
+    {% load custom_filters %}
+    <h1>{{ player.name }}</h1>
+    <h3>Height: {{player.height}} inches </h3>
+    <h3>Weight: {{player.weight}} lbs</h3>
+    <h3>Team: {{player.team}}</h3>
+    <h2>Per Game Stats</h2>
+    <ul>
+        <li> Points Per Game: {{player.season_points|divide:player.games_played}}</li>
+        <li> Rebounds Per Game: {{player.season_off_rebounds|add:player.season_def_rebounds|divide:player.games_played}}</li>
+        <li> Assists Per Game: {{player.season_assists|divide:player.games_played}}</li>
+        <li> Blocks Per Game: {{player.season_blocks|divide:player.games_played}}</li>
+        <li> Steals Per Game: {{player.season_steals|divide:player.games_played}}</li>
+        <li> Fouls Per Game: {{player.season_fouls|divide:player.games_played}}</li>
+        <li> Offensive Rebounds Per Game: {{player.season_off_rebounds|divide:player.games_played}}</li>
+        <li> Defensive Rebounds Per Game: {{player.season_def_rebounds|divide:player.games_played}}</li>
+    </ul>
+
+    <a href="{% url 'team_list' %}">Back to Team List</a>
+    <a href="{% url 'edit_player' player.name %}">Edit Player</a>
+</body>
+</html>

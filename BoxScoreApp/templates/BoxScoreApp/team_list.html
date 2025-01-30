@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Team List</title>
+</head>
+<body>
+    <a href = {%url 'home'%}>Home</a>
+    <h1>Teams</h1>
+    <ul>
+        {% for team in teams %}
+            <li>
+                <a href= {%url 'team_detail' team.name%}>{{ team.name }}</a> (Coach: {{ team.head_coach }})
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

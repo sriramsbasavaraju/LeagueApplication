@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome Page</title>
+</head>
+<body>
+    <h1>Players</h1>
+    <ul>
+        {% for player in players %}
+            <li>
+                <a href =  {%url 'player_detail' player.name%}> {{ player.name }}</a> 
+        {% empty %}
+            <p>No players</p>
+        {% endfor %}
+</body>
+</html>
