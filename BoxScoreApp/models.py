@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+import random
 
 # Player model
 class Player(models.Model):
@@ -29,8 +30,12 @@ class Player(models.Model):
     def __str__(self):
         return self.name
     # def save(self, *args, **kwargs):
-    #     if not self.slug:
-    #         self.slug = slugify(self.name)
+    #     if not self.slug:  # Generate a random 6-digit number if slug is missing
+    #         while True:
+    #             random_slug = str(random.randint(100000, 999999))  # Generate a 6-digit random number
+    #             if not Player.objects.filter(slug=random_slug).exists():  # Ensure uniqueness
+    #                 self.slug = random_slug
+    #                 break
     #     super().save(*args, **kwargs)
 
 # Team model
@@ -45,14 +50,16 @@ class Game(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     team1 = models.ForeignKey(Team, related_name="games_as_team1", on_delete=models.CASCADE)
     team2 = models.ForeignKey(Team, related_name="games_as_team2", on_delete=models.CASCADE)
-    team1_score = models.IntegerField(default=0)
-    team2_score = models.IntegerField(default=0)
     date = models.DateField()
     def __str__(self):
         return self.team1.name + " vs " + self.team2.name + " " + str(self.date)
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(f"{self.team1.name}_vs_{self.team2.name}_{self.date}")
+        if not self.slug:  # Generate a random 6-digit number if slug is missing
+            while True:
+                random_slug = str(random.randint(100000, 999999))  # Generate a 6-digit random number
+                if not Game.objects.filter(slug=random_slug).exists():  # Ensure uniqueness
+                    self.slug = random_slug
+                    break
         super().save(*args, **kwargs)
 
 # BoxScore model

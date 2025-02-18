@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Game</title>
+</head>
+<body>
+    <h1>Edit Game</h1>
+    <form method="post" action="{% url 'edit_game' game.slug %}">
+        {% csrf_token %}
+        {{ game_form.as_p }}
+        <h2>{{game.team1.name}}</h2>
+        <table>
+            <tr>
+                <th>Player</th>
+                <th>PTS</th>
+                <th>AST</th>
+                <th>BLK</th>
+                <th>STL</th>
+                <th>PF</th>
+                <th>OREB</th>
+                <th>DREB</th>
+            </tr>
+        {%for p in team1_forms%}
+            <tr>
+                <td>{{p.player}}</td>
+                <td>{{p.points}}</td>
+                <td>{{p.assists}}</td>
+                <td>{{p.blocks}}</td>
+                <td>{{p.steals}}</td>
+                <td>{{p.fouls}}</td>
+                <td>{{p.off_rebounds}}</td>
+                <td>{{p.def_rebounds}}</td>
+            </tr>
+        {%empty%}
+        {{p.player.name}}
+        {%endfor%}
+        
+        </table>
+        <h2>{{game.team2.name}}</h2>
+        <table>
+            <tr>
+                <th>Player</th>
+                <th>PTS</th>
+                <th>AST</th>
+                <th>BLK</th>
+                <th>STL</th>
+                <th>PF</th>
+                <th>OREB</th>
+                <th>DREB</th>
+            </tr>
+        {%for p in team2_forms%}
+            <tr>
+                <td>{{p.player}}</td>
+                <td>{{p.points}}</td>
+                <td>{{p.assists}}</td>
+                <td>{{p.blocks}}</td>
+                <td>{{p.steals}}</td>
+                <td>{{p.fouls}}</td>
+                <td>{{p.off_rebounds}}</td>
+                <td>{{p.def_rebounds}}</td>
+            </tr>
+        {%empty%}
+        {{p.player.name}}
+        {%endfor%}
+        </table>
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>
+

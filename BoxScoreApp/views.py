@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Team, Player, Game, PlayerGameStats
-from .forms import PlayerForm, TeamForm, GameForm
+from .forms import PlayerForm, TeamForm, GameForm, PlayerGameStatsForm
 
 def home(request):
     return render(request, 'BoxScoreApp/index.html')
@@ -70,4 +70,36 @@ def edit_team(request, team_name=None):
         form = TeamForm(instance=team)
     return render(request, 'BoxScoreApp/edit_team.html', {'form': form, 'team': team})
 
+def edit_game(request, slug=None):
+    if slug:
+        game = get_object_or_404(Game, slug=slug)
+        team1_players = game.team1.players.all()
+        team2_players = game.team2.players.all()
+    else:
+        game = None
+    if request.method == 'POST':
+        game_form = GameForm(request.POST, instance=game)
+        team1_forms = [PlayerGameStatsForm(request.POST, prefix=str(player.id), instance=PlayerGameStats.objects.get(game=game, player=player)) for player in team1_players]
+        team2_forms = [PlayerGameStatsForm(request.POST, prefix=str(player.id), instance=PlayerGameStats.objects.get(game=game, player=player)) for player in team2_players]
+        if game_form.is_valid():
+            game_form.save()
+            for form in team1_forms + team2_forms:
+                if form.is_valid():
+                    form.save()
+            return redirect('game_display', slug=game.slug)
+    else:
+        game_form = GameForm(instance=game)
+        team1_forms = [PlayerGameStatsForm(prefix=str(player.id), instance=PlayerGameStats.objects.get(game=game, player=player)) for player in team1_players]
+        team2_forms = [PlayerGameStatsForm(prefix=str(player.id), instance=PlayerGameStats.objects.get(game=game, player=player)) for player in team2_players]
+    return render(request, 'BoxScoreApp/edit_game.html', {'game_form': game_form, 'game': game, 'team1_forms': team1_forms, 'team2_forms': team2_forms})
+
+def add_player(request):
+    if request.method == 'POST':
+        form = PlayerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('player_list')
+    else:
+        form = PlayerForm()
+    return render(request, 'BoxScoreApp/add_player.html', {'form': form})
 # Create your views here.

@@ -30,6 +30,7 @@ urlpatterns = [
     path('<str:player_name>/', views.player_details, name = 'player_detail'),
     path('edit/player/<str:player_name>/', views.edit_player, name='edit_player'), 
     path('edit/team/<str:team_name>/', views.edit_team, name='edit_team'),  
+    path('edit/game/<slug:slug>/', views.edit_game, name='edit_game'),
     
     
 ]

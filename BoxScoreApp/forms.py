@@ -14,9 +14,10 @@ class TeamForm(forms.ModelForm):
 class GameForm(forms.ModelForm):
     class Meta:
         model = Game
-        fields = '__all__'
+        fields = ['date']
 
 class PlayerGameStatsForm(forms.ModelForm):
     class Meta:
         model = PlayerGameStats
-        fields = '__all__'
+        exclude = ['game']
+        # fields = '__all__'
