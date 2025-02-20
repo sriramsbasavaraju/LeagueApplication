@@ -39,8 +39,6 @@ def game_display(request, slug):
         'team1_stats': team1_stats, 
         'team2_stats': team2_stats,
     })
-def editor(request):
-    return render(request, 'BoxScoreApp/editor.html')
 
 def edit_player(request, player_name=None):
     if player_name:
@@ -97,9 +95,29 @@ def add_player(request):
     if request.method == 'POST':
         form = PlayerForm(request.POST)
         if form.is_valid():
-            form.save()
+            name = form.cleaned_data['name']
+            number = form.cleaned_data['number']
+            height = form.cleaned_data['height']
+            weight = form.cleaned_data['weight']
+            position = form.cleaned_data['position']
+            team = form.cleaned_data['team']
+            player = Player(name=name, number=number, height=height, weight=weight, position=position, team=team)
+            player.save()
             return redirect('player_list')
     else:
         form = PlayerForm()
     return render(request, 'BoxScoreApp/add_player.html', {'form': form})
+
+def add_team(request):
+    if request.method == 'POST':
+        form = TeamForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            head_coach = form.cleaned_data['head_coach']
+            team = Team(name=name, head_coach=head_coach)
+            team.save()
+            return redirect('team_list')
+    else:
+        form = TeamForm()
+    return render(request, 'BoxScoreApp/add_team.html', {'form': form})
 # Create your views here.
